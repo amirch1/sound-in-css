@@ -4,22 +4,37 @@
 </head>
 
 <style>
-    button i {
+    .buttonClick {
         background-image: url('data:audio/mpeg;base64,SUQzAwAAAAAAUFRFTkMAAAAVIAAAU291bmQgR3JpbmRlciA0LjAuNABBUElDAAAABCAAAAAAAFRDT1AAAAAZIAAAQ29weXJpZ2h0IEFsYW4gTWNLaW5uZXkA//uYyAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAADAAAEpABpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWnDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8P///////////////////////////////////////////8AAAAOTEFNRTMuMTAwA30AAAAAAAAAANQgJAJAgQABpAAABKTq8LCzAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//tIyAAAAeQA/hQRAAMMv+irKUAAxAGMoCDgQBA5KO//BB0PgjjiiDCAIgAAhAAbQM6XBQP0QtgBw5+cJwDr1wO2xycKYEsAGXV8rls0BQmB52oWlemmpAAooBp0oGjLgHF/zU2JwiBmbhyIGFFgFFwNkmAzhABQh/m6FNRozgBKxXg5QGw4AwMLKwBjguX/6C03Q7DNg2QAAAAOCAZ0SDeMZMA0OBkyYBxv/+2//AzhQDIEADigGPAi3k4QcrIk4TBob////23/QJ8vm5otM0Mz4rQUAMgGrxKY4///////xcBpJwuHlY00QAAAAUrq0AAQAAAD2GgMBOID//s4yAoAFclXUbmqAACRB6VDjmAAqJAzxZV0bX89gIAI5f/gGjAMukUrA3ugkQMUBC+QZdLRkywtiBQCJ1AAAmxGh6IwWQRWASOAyIIBIMKHgoUAxJAslEVqF/RRTqVTmSQbKDYCBghI5RFwDBYiQWjeoi3/jnGQjoBIQLEQbYg3CQ4G6wYm2Mq2RR/+gITClklkaRZMjSBaOvX///pL1qdajIixMkVJlIK///PKBoIQAREAcEzmm//W+ZYkFEiISjUDQKgqEgaf6zsad//+IXB1GVUKxYC9//sYyAIDwVQFAgEEYAAAADSAAAAET9bjx3//WkxBTUUzLjEwMKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqVEFHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP8=');
     }
 </style>
 
 <script>
+
     let audio;
+
+    getAudioData = (cssSelector) => {
+        for (let i = 0; i < document.styleSheets.length; i++) {
+            const rules = document.styleSheets[i].rules || document.styleSheets[i].cssRules;
+            for (let rule in rules) {
+                if (rules[rule].selectorText === cssSelector) {
+                    const style = rules[rule].style;
+                    return style.backgroundImage.substring(5, style.backgroundImage.length - 2);
+                }
+            }
+        }
+        return '';
+    }
+
     onClick = (event) => {
-        const style = window.getComputedStyle(event.target.getElementsByTagName('i')[0]);
-        const audioData = style.backgroundImage.substring(5, style.backgroundImage.length - 2);
+        const audioData = getAudioData('.buttonClick');
         audio = new Audio(audioData);
         audio.play();
     }
 </script>
+
 <body>
-<h3>Button click sound is hidden in the background image CSS property of its enclosed i tag</h3>
-<button onmousedown='onClick(event)'><i></i>Click me</button>
+    <h3>Button click sound is hidden in the background image property of a dummy CSS class</h3>
+    <button onmousedown='onClick(event)'>Click me</button>
 </body>
 </html>
